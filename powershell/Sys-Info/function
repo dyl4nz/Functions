@@ -43,4 +43,9 @@ function Get-SystemInfo {
 }
 
 $info = Get-SystemInfo
-$info | Set-Clipboard
+
+# Format the system information as a string
+$infoString = $info | Format-Table | Out-String
+
+# Set the formatted string to the clipboard
+$infoString | Set-Clipboard
