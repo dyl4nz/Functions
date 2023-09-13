@@ -49,3 +49,5 @@ $infoString = $info | Format-Table | Out-String
 
 # Set the formatted string to the clipboard
 $infoString | Set-Clipboard
+
+Start-Process notepad WindowStyle Maximised
