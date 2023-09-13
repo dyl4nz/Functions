@@ -1,0 +1,46 @@
+function Get-SystemInfo {
+    $systemInfo = @{}
+    $osInfo = Get-WmiObject Win32_OperatingSystem
+    $systemInfo.Add("Computer Name", $osInfo.CSName)
+    $systemInfo.Add("Operating System", $osInfo.Caption)
+    $systemInfo.Add("Architecture", $osInfo.OSArchitecture)
+    
+    $computerSystem = Get-WmiObject Win32_ComputerSystem
+    $systemInfo.Add("Manufacturer", $computerSystem.Manufacturer)
+    $systemInfo.Add("Model", $computerSystem.Model)
+    $systemInfo.Add("BIOS Version", (Get-WmiObject Win32_BIOS).SMBIOSBIOSVersion)
+
+    $processor = Get-WmiObject Win32_Processor
+    $systemInfo.Add("Processor", $processor.Name)
+    $systemInfo.Add("Number of Cores", $processor.NumberOfCores)
+    $systemInfo.Add("Max Clock Speed", "$($processor.MaxClockSpeed) MHz")
+
+    $memory = Get-WmiObject Win32_ComputerSystem | Select-Object TotalPhysicalMemory
+    $systemInfo.Add("Total Physical Memory", "$([math]::truncate($memory.TotalPhysicalMemory / 1GB)) GB")
+
+    $freeMemory = Get-WmiObject Win32_OperatingSystem | Select-Object FreePhysicalMemory
+    $systemInfo.Add("Free Physical Memory", "$([math]::truncate($freeMemory.FreePhysicalMemory / 1GB)) GB")
+
+    $diskDrive = Get-WmiObject Win32_DiskDrive | Select-Object Caption, Size, MediaType, Model, Partitions, SerialNumber
+    $systemInfo.Add("Disk Drive", $diskDrive)
+
+    $networkAdapter = Get-WmiObject Win32_NetworkAdapter | Where-Object { $_.PhysicalAdapter -eq $true } | Select-Object Name, AdapterType, MACAddress, Speed, NetConnectionStatus
+    $systemInfo.Add("Network Adapter", $networkAdapter)
+
+    $videoController = Get-WmiObject Win32_VideoController | Select-Object Caption, AdapterRAM, CurrentBitsPerPixel, CurrentHorizontalResolution, CurrentVerticalResolution
+    $systemInfo.Add("Video Controller", $videoController)
+
+    $soundDevice = Get-WmiObject Win32_SoundDevice | Select-Object Caption, Manufacturer, Status
+    $systemInfo.Add("Sound Device", $soundDevice)
+
+    $printer = Get-WmiObject Win32_Printer | Select-Object Name, PortName, DriverName, Location, Default
+    $systemInfo.Add("Printer", $printer)
+
+    $battery = Get-WmiObject Win32_Battery | Select-Object EstimatedChargeRemaining, BatteryStatus, EstimatedRunTime
+    $systemInfo.Add("Battery", $battery)
+
+    return $systemInfo
+}
+
+$info = Get-SystemInfo
+$info | Set-Clipboard
