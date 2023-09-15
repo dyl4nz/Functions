@@ -42,12 +42,15 @@ function Get-SystemInfo {
     return $systemInfo
 }
 
+
 $info = Get-SystemInfo
 
 # Format the system information as a string
-$infoString = $info | Format-Table | Out-String
+$infoString = $info | Format-List | Out-String
 
-# Set the formatted string to the clipboard
-$infoString | Set-Clipboard
+# Save the formatted information to a temporary text file
+$tempFilePath = [System.IO.Path]::GetTempFileName() + ".txt"
+$infoString | Set-Content -Path $tempFilePath
 
-Start-Process notepad -WindowStyle Maximized
+# Open the temporary text file with Notepad
+Start-Process notepad -ArgumentList $tempFilePath
